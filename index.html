@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Household Duty Tracker</title>
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="main-header">
+      <div class="header-content">
+        <h1>Household Duty Tracker</h1>
+        <p class="subtitle">Organize, assign, and track roommate responsibilities effortlessly</p>
+      </div>
+      
+      <!-- Theme Selector Bar -->
+      <div class="theme-bar">
+        <button type="button" class="btn-theme" onclick="setTheme('auto')"><i class="fa-solid fa-gear"></i> Auto</button>
+        <button type="button" class="btn-theme" onclick="setTheme('light')"><i class="fa-solid fa-sun"></i> Light</button>
+        <button type="button" class="btn-theme" onclick="setTheme('dark')"><i class="fa-solid fa-moon"></i> Dark</button>
+        <button type="button" class="btn-theme" onclick="setTheme('warm')"><i class="fa-solid fa-mountain-sun"></i> Warm</button>
+      </div>
+    </header>
+
+    <!-- 3-Column Dashboard Layout -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Assign Duty Form -->
+      <div class="card col-panel">
+        <div class="card-header">
+          <h2>Assign Duty</h2>
+        </div>
+
+        <div class="quick-buttons-wrapper">
+          <label class="section-label">Category Templates:</label>
+          <div class="quick-buttons">
+            <button type="button" class="btn-preset active" data-category="Kitchen"><i class="fa-solid fa-kitchen-set"></i> Kitchen</button>
+            <button type="button" class="btn-preset" data-category="Cleaning"><i class="fa-solid fa-broom"></i> Cleaning</button>
+            <button type="button" class="btn-preset" data-category="Grocery"><i class="fa-solid fa-cart-shopping"></i> Grocery</button>
+            <button type="button" class="btn-preset" data-category="Bills"><i class="fa-solid fa-file-invoice-dollar"></i> Utility / Bills</button>
+            <button type="button" class="btn-preset" data-category="Other"><i class="fa-solid fa-ellipsis"></i> Other</button>
+          </div>
+        </div>
+
+        <form id="task-form" class="form-group">
+          <div class="input-field">
+            <label class="section-label" for="task-category">Category</label>
+            <select id="task-category" required>
+              <option value="Kitchen" selected>Kitchen</option>
+              <option value="Cleaning">Cleaning</option>
+              <option value="Grocery">Grocery</option>
+              <option value="Bills">Bills & Utility</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="input-field">
+            <label class="section-label" for="task-title">Key Task / What to Do</label>
+            <input type="text" id="task-title" value="Wash breakfast and dinner dishes, wipe down counters." placeholder="Describe what needs to be done..." required />
+          </div>
+
+          <div class="form-row">
+            <div class="input-field">
+              <label class="section-label" for="assigned-by">Assigned By</label>
+              <select id="assigned-by" required>
+                <option value="Srabani" selected>Srabani</option>
+                <option value="Bhagyalaxmi">Bhagyalaxmi</option>
+                <option value="Barsha">Barsha</option>
+                <option value="Priyanka">Priyanka</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <label class="section-label" for="assigned-to">Assigned To</label>
+              <select id="assigned-to" required>
+                <option value="Srabani">Srabani</option>
+                <option value="Bhagyalaxmi" selected>Bhagyalaxmi</option>
+                <option value="Barsha">Barsha</option>
+                <option value="Priyanka">Priyanka</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Assign Task</button>
+        </form>
+      </div>
+
+      <!-- Middle Column: Active Tasks List -->
+      <div class="card col-panel">
+        <div class="card-header space-between">
+          <h2>Active Tasks</h2>
+          <button id="clear-btn" class="btn-clear" title="Clear all active tasks"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+        </div>
+        <div id="task-list" class="task-list scrollable-area"></div>
+      </div>
+
+      <!-- Right Column: Reports & Reviews -->
+      <div class="card col-panel">
+        <div class="card-header">
+          <h2>Activity Reports</h2>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number" id="daily-count">0</span>
+            <span class="stat-label">Today</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="weekly-count">0</span>
+            <span class="stat-label">Weekly</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="monthly-count">0</span>
+            <span class="stat-label">Monthly</span>
+          </div>
+        </div>
+
+        <label class="section-label">Member Progress</label>
+        <div id="member-stats" class="member-stats-list"></div>
+
+        <label class="section-label">Task History</label>
+        <div id="detailed-logs-list" class="task-list history-list scrollable-area"></div>
+      </div>
+
+    </div>
+
+    <!-- Full-Width Weekly Grid View (Monday to Sunday) -->
+    <div class="card full-width-card">
+      <div class="card-header space-between">
+        <div>
+          <h2>Weekly Duty Rota (Monday - Sunday)</h2>
+          <p class="subtitle">Fair distribution matrix. Click cell dropdowns to reassign or auto-rotate weekly.</p>
+        </div>
+        <button type="button" id="rotate-rota-btn" class="btn-primary"><i class="fa-solid fa-rotate"></i> Auto-Rotate Rota</button>
+      </div>
+      
+      <div class="weekly-table-wrapper">
+        <table class="weekly-grid-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+              <th>Sun</th>
+            </tr>
+          </thead>
+          <tbody id="weekly-rota-body">
+            <!-- Dynamically populated via script.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
