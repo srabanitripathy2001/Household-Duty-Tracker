@@ -3,7 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Household Duty Tracker</title>
+  
+  <!-- SEO Primary Meta Tags -->
+  <title>Household Duty Tracker - Organize & Assign Roommate Chores</title>
+  <meta name="title" content="Household Duty Tracker - Organize & Assign Roommate Chores" />
+  <meta name="description" content="Effortlessly track household duties, auto-rotate weekly roommate rotas, and manage shared responsibilities with our simple, fair household duty tracker." />
+  <meta name="keywords" content="household duty tracker, roommate chore manager, weekly duty rota, cleaning schedule app, household management" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Household Duty Tracker" />
+  <link rel="canonical" href="https://example.com/household-duty-tracker" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧹</text></svg>" />
+
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://example.com/household-duty-tracker" />
+  <meta property="og:title" content="Household Duty Tracker - Organize & Assign Roommate Chores" />
+  <meta property="og:description" content="Organize, assign, and track roommate responsibilities effortlessly with a weekly duty rota matrix." />
+  <meta property="og:image" content="https://example.com/og-image.jpg" />
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://example.com/household-duty-tracker" />
+  <meta name="twitter:title" content="Household Duty Tracker - Organize & Assign Roommate Chores" />
+  <meta name="twitter:description" content="Organize, assign, and track roommate responsibilities effortlessly with a weekly duty rota matrix." />
+  <meta name="twitter:image" content="https://example.com/og-image.jpg" />
+
+  <!-- Schema.org JSON-LD Structured Data for 100% SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Household Duty Tracker",
+    "url": "https://example.com/household-duty-tracker",
+    "description": "Organize, assign, and track roommate responsibilities effortlessly with a weekly duty rota matrix.",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "All"
+  }
+  </script>
 
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -11,45 +49,47 @@
 </head>
 <body>
   <div class="app-container">
-    <header class="main-header">
+    <header class="main-header" role="banner">
       <div class="header-content">
         <h1>Household Duty Tracker</h1>
         <p class="subtitle">Organize, assign, and track roommate responsibilities effortlessly</p>
       </div>
       
       <!-- Theme Selector Bar -->
-      <div class="theme-bar">
-        <button type="button" class="btn-theme" onclick="setTheme('auto')"><i class="fa-solid fa-gear"></i> Auto</button>
-        <button type="button" class="btn-theme" onclick="setTheme('light')"><i class="fa-solid fa-sun"></i> Light</button>
-        <button type="button" class="btn-theme" onclick="setTheme('dark')"><i class="fa-solid fa-moon"></i> Dark</button>
-        <button type="button" class="btn-theme" onclick="setTheme('warm')"><i class="fa-solid fa-mountain-sun"></i> Warm</button>
-      </div>
+      <nav aria-label="Theme switcher">
+        <div class="theme-bar" role="group" aria-label="Select Color Theme">
+          <button type="button" class="btn-theme active" aria-pressed="true" onclick="setTheme('auto', this)"><i class="fa-solid fa-gear" aria-hidden="true"></i> Auto</button>
+          <button type="button" class="btn-theme" aria-pressed="false" onclick="setTheme('light', this)"><i class="fa-solid fa-sun" aria-hidden="true"></i> Light</button>
+          <button type="button" class="btn-theme" aria-pressed="false" onclick="setTheme('dark', this)"><i class="fa-solid fa-moon" aria-hidden="true"></i> Dark</button>
+          <button type="button" class="btn-theme" aria-pressed="false" onclick="setTheme('warm', this)"><i class="fa-solid fa-mountain-sun" aria-hidden="true"></i> Warm</button>
+        </div>
+      </nav>
     </header>
 
     <!-- 3-Column Dashboard Layout -->
-    <div class="dashboard-grid">
+    <main class="dashboard-grid" id="main-content">
       
       <!-- Left Column: Assign Duty Form -->
-      <div class="card col-panel">
+      <section class="card col-panel" aria-labelledby="assign-duty-heading">
         <div class="card-header">
-          <h2>Assign Duty</h2>
+          <h2 id="assign-duty-heading">Assign Duty</h2>
         </div>
 
         <div class="quick-buttons-wrapper">
-          <label class="section-label">Category Templates:</label>
-          <div class="quick-buttons">
-            <button type="button" class="btn-preset active" data-category="Kitchen"><i class="fa-solid fa-kitchen-set"></i> Kitchen</button>
-            <button type="button" class="btn-preset" data-category="Cleaning"><i class="fa-solid fa-broom"></i> Cleaning</button>
-            <button type="button" class="btn-preset" data-category="Grocery"><i class="fa-solid fa-cart-shopping"></i> Grocery</button>
-            <button type="button" class="btn-preset" data-category="Bills"><i class="fa-solid fa-file-invoice-dollar"></i> Utility / Bills</button>
-            <button type="button" class="btn-preset" data-category="Other"><i class="fa-solid fa-ellipsis"></i> Other</button>
+          <span class="section-label" id="category-preset-label">Category Templates:</span>
+          <div class="quick-buttons" role="group" aria-labelledby="category-preset-label">
+            <button type="button" class="btn-preset active" data-category="Kitchen" aria-pressed="true"><i class="fa-solid fa-kitchen-set" aria-hidden="true"></i> Kitchen</button>
+            <button type="button" class="btn-preset" data-category="Cleaning" aria-pressed="false"><i class="fa-solid fa-broom" aria-hidden="true"></i> Cleaning</button>
+            <button type="button" class="btn-preset" data-category="Grocery" aria-pressed="false"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Grocery</button>
+            <button type="button" class="btn-preset" data-category="Bills" aria-pressed="false"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Utility / Bills</button>
+            <button type="button" class="btn-preset" data-category="Other" aria-pressed="false"><i class="fa-solid fa-ellipsis" aria-hidden="true"></i> Other</button>
           </div>
         </div>
 
         <form id="task-form" class="form-group">
           <div class="input-field">
             <label class="section-label" for="task-category">Category</label>
-            <select id="task-category" required>
+            <select id="task-category" name="category" required>
               <option value="Kitchen" selected>Kitchen</option>
               <option value="Cleaning">Cleaning</option>
               <option value="Grocery">Grocery</option>
@@ -60,13 +100,13 @@
 
           <div class="input-field">
             <label class="section-label" for="task-title">Key Task / What to Do</label>
-            <input type="text" id="task-title" value="Wash breakfast and dinner dishes, wipe down counters." placeholder="Describe what needs to be done..." required />
+            <input type="text" id="task-title" name="title" value="Wash breakfast and dinner dishes, wipe down counters." placeholder="Describe what needs to be done..." required />
           </div>
 
           <div class="form-row">
             <div class="input-field">
               <label class="section-label" for="assigned-by">Assigned By</label>
-              <select id="assigned-by" required>
+              <select id="assigned-by" name="assignedBy" required>
                 <option value="Srabani" selected>Srabani</option>
                 <option value="Bhagyalaxmi">Bhagyalaxmi</option>
                 <option value="Barsha">Barsha</option>
@@ -76,7 +116,7 @@
 
             <div class="input-field">
               <label class="section-label" for="assigned-to">Assigned To</label>
-              <select id="assigned-to" required>
+              <select id="assigned-to" name="assignedTo" required>
                 <option value="Srabani">Srabani</option>
                 <option value="Bhagyalaxmi" selected>Bhagyalaxmi</option>
                 <option value="Barsha">Barsha</option>
@@ -85,26 +125,26 @@
             </div>
           </div>
 
-          <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Assign Task</button>
+          <button type="submit" class="btn-primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Assign Task</button>
         </form>
-      </div>
+      </section>
 
       <!-- Middle Column: Active Tasks List -->
-      <div class="card col-panel">
+      <section class="card col-panel" aria-labelledby="active-tasks-heading">
         <div class="card-header space-between">
-          <h2>Active Tasks</h2>
-          <button id="clear-btn" class="btn-clear" title="Clear all active tasks"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+          <h2 id="active-tasks-heading">Active Tasks</h2>
+          <button id="clear-btn" class="btn-clear" aria-label="Clear all active tasks" title="Clear all active tasks"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Clear All</button>
         </div>
-        <div id="task-list" class="task-list scrollable-area"></div>
-      </div>
+        <div id="task-list" class="task-list scrollable-area" aria-live="polite" aria-relevant="additions removals"></div>
+      </section>
 
       <!-- Right Column: Reports & Reviews -->
-      <div class="card col-panel">
+      <section class="card col-panel" aria-labelledby="activity-reports-heading">
         <div class="card-header">
-          <h2>Activity Reports</h2>
+          <h2 id="activity-reports-heading">Activity Reports</h2>
         </div>
         
-        <div class="stats-grid">
+        <div class="stats-grid" aria-live="polite">
           <div class="stat-card">
             <span class="stat-number" id="daily-count">0</span>
             <span class="stat-label">Today</span>
@@ -119,37 +159,38 @@
           </div>
         </div>
 
-        <label class="section-label">Member Progress</label>
-        <div id="member-stats" class="member-stats-list"></div>
+        <span class="section-label" id="member-progress-label">Member Progress</span>
+        <div id="member-stats" class="member-stats-list" aria-labelledby="member-progress-label"></div>
 
-        <label class="section-label">Task History</label>
-        <div id="detailed-logs-list" class="task-list history-list scrollable-area"></div>
-      </div>
+        <span class="section-label" id="task-history-label">Task History</span>
+        <div id="detailed-logs-list" class="task-list history-list scrollable-area" aria-labelledby="task-history-label" aria-live="polite"></div>
+      </section>
 
-    </div>
+    </main>
 
     <!-- Full-Width Weekly Grid View (Monday to Sunday) -->
-    <div class="card full-width-card">
+    <section class="card full-width-card" aria-labelledby="weekly-rota-heading">
       <div class="card-header space-between">
         <div>
-          <h2>Weekly Duty Rota (Monday - Sunday)</h2>
+          <h2 id="weekly-rota-heading">Weekly Duty Rota (Monday - Sunday)</h2>
           <p class="subtitle">Fair distribution matrix. Click cell dropdowns to reassign or auto-rotate weekly.</p>
         </div>
-        <button type="button" id="rotate-rota-btn" class="btn-primary"><i class="fa-solid fa-rotate"></i> Auto-Rotate Rota</button>
+        <button type="button" id="rotate-rota-btn" class="btn-primary"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Auto-Rotate Rota</button>
       </div>
       
       <div class="weekly-table-wrapper">
         <table class="weekly-grid-table">
+          <caption>Weekly duty assignment plan by category and day</caption>
           <thead>
             <tr>
-              <th>Category</th>
-              <th>Mon</th>
-              <th>Tue</th>
-              <th>Wed</th>
-              <th>Thu</th>
-              <th>Fri</th>
-              <th>Sat</th>
-              <th>Sun</th>
+              <th scope="col">Category</th>
+              <th scope="col">Mon</th>
+              <th scope="col">Tue</th>
+              <th scope="col">Wed</th>
+              <th scope="col">Thu</th>
+              <th scope="col">Fri</th>
+              <th scope="col">Sat</th>
+              <th scope="col">Sun</th>
             </tr>
           </thead>
           <tbody id="weekly-rota-body">
@@ -157,7 +198,7 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
 
   </div>
 

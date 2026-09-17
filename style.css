@@ -10,21 +10,22 @@
 
   --bg: #f8fafc;
   --card-bg: #ffffff;
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
   --primary-light: #e0e7ff;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
-  --success: #10b981;
-  --success-hover: #059669;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --success: #059669;
+  --success-hover: #047857;
   --text: #0f172a;
-  --text-muted: #64748b;
+  --text-muted: #475569;
   --border: #cbd5e1;
   --input-bg: #ffffff;
   --preset-bg: #f1f5f9;
   --preset-border: #cbd5e1;
   --task-bg: #f8fafc;
   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+  --focus-ring: #4f46e5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -39,13 +40,14 @@
     --success: #34d399;
     --success-hover: #10b981;
     --text: #f1f5f9;
-    --text-muted: #94a3b8;
+    --text-muted: #cbd5e1;
     --border: #334155;
     --input-bg: #0b1322;
     --preset-bg: #1e293b;
     --preset-border: #475569;
     --task-bg: #0b1322;
     --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --focus-ring: #818cf8;
   }
 }
 
@@ -60,33 +62,35 @@
   --success: #34d399;
   --success-hover: #10b981;
   --text: #f1f5f9;
-  --text-muted: #94a3b8;
+  --text-muted: #cbd5e1;
   --border: #334155;
   --input-bg: #0b1322;
   --preset-bg: #1e293b;
   --preset-border: #475569;
   --task-bg: #0b1322;
   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --focus-ring: #818cf8;
 }
 
 [data-theme="warm"] {
   --bg: #fffbeb;
   --card-bg: #ffffff;
-  --primary: #d97706;
-  --primary-hover: #b45309;
+  --primary: #b45309;
+  --primary-hover: #92400e;
   --primary-light: #fef3c7;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
-  --success: #059669;
-  --success-hover: #047857;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --success: #047857;
+  --success-hover: #065f46;
   --text: #451a03;
   --text-muted: #78350f;
-  --border: #fde68a;
+  --border: #fcd34d;
   --input-bg: #ffffff;
   --preset-bg: #fef3c7;
   --preset-border: #fcd34d;
   --task-bg: #fffdf9;
   --shadow: 0 10px 15px -3px rgba(217, 119, 6, 0.05), 0 4px 6px -4px rgba(217, 119, 6, 0.02);
+  --focus-ring: #b45309;
 }
 
 /* ==========================================================================
@@ -108,6 +112,11 @@ body {
   padding: 24px 16px;
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .app-container {
@@ -155,19 +164,30 @@ body {
   background-color: transparent;
   color: var(--text);
   border: none;
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: var(--font-sm);
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  opacity: 0.85;
 }
 
 .btn-theme:hover {
   color: var(--primary);
+  opacity: 1;
+}
+
+.btn-theme.active {
+  background-color: var(--card-bg);
+  color: var(--primary);
+  opacity: 1;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border);
 }
 
 .dashboard-grid {
@@ -274,7 +294,7 @@ body {
   color: #ffffff;
   border-color: var(--primary-hover);
   font-weight: 600;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .form-group {
@@ -310,7 +330,6 @@ select {
 input:focus,
 select:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 button {
@@ -413,7 +432,7 @@ button {
 }
 
 .task-item.completed {
-  opacity: 0.6;
+  opacity: 0.7;
   background-color: var(--card-bg);
 }
 
@@ -486,6 +505,18 @@ button {
   font-size: var(--font-base);
 }
 
+.weekly-grid-table caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .weekly-grid-table th,
 .weekly-grid-table td {
   border: 1px solid var(--border);
@@ -502,7 +533,8 @@ button {
   letter-spacing: 0.04em;
 }
 
-.weekly-grid-table td:first-child {
+.weekly-grid-table td:first-child,
+.weekly-grid-table th[scope="row"] {
   font-weight: 600;
   background-color: var(--preset-bg);
   text-align: left;
@@ -510,7 +542,8 @@ button {
   font-size: var(--font-base);
 }
 
-.weekly-grid-table td:first-child i {
+.weekly-grid-table td:first-child i,
+.weekly-grid-table th[scope="row"] i {
   margin-right: 6px;
   color: var(--primary);
 }

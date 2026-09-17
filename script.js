@@ -1,5 +1,6 @@
 // State Management
 const members = ["Srabani", "Bhagyalaxmi", "Barsha", "Priyanka"];
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const categories = [
   { name: "Kitchen", icon: "fa-kitchen-set" },
   { name: "Cleaning", icon: "fa-broom" },
@@ -7,6 +8,15 @@ const categories = [
   { name: "Bills", icon: "fa-file-invoice-dollar" },
   { name: "Other", icon: "fa-ellipsis" }
 ];
+
+// Default Autofill Preset Descriptions for Category Tasks
+const defaultCategoryTasks = {
+  Kitchen: "Wash breakfast and dinner dishes, wipe down counters.",
+  Cleaning: "Sweep living room, mop kitchen floor, and empty trash bins.",
+  Grocery: "Purchase weekly essentials, milk, vegetables, and household items.",
+  Bills: "Pay electricity, internet, and shared water bills on time.",
+  Other: "General household maintenance and miscellaneous chores."
+};
 
 let activeTasks = [];
 let taskHistory = [];
@@ -18,12 +28,22 @@ let weeklyRota = {
   Other: ["Srabani", "Bhagyalaxmi", "Barsha", "Priyanka", "Srabani", "Bhagyalaxmi", "Barsha"]
 };
 
-// Theme Toggle Functionality
-function setTheme(theme) {
+// Theme Toggle Functionality with Active State Highlighting & ARIA Updates
+function setTheme(theme, btnElement) {
   if (theme === 'auto') {
     document.documentElement.removeAttribute('data-theme');
   } else {
     document.documentElement.setAttribute('data-theme', theme);
+  }
+
+  // Handle active class visually and accessible aria-pressed state on buttons
+  if (btnElement) {
+    document.querySelectorAll('.btn-theme').forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-pressed', 'false');
+    });
+    btnElement.classList.add('active');
+    btnElement.setAttribute('aria-pressed', 'true');
   }
 }
 
@@ -38,25 +58,42 @@ function getCategoryIcon(cat) {
   }
 }
 
-// Preset Category Selection
+// Autofill helper function
+function updateTaskDescription(category) {
+  const taskTitleInput = document.getElementById('task-title');
+  if (defaultCategoryTasks[category]) {
+    taskTitleInput.value = defaultCategoryTasks[category];
+  }
+}
+
+// Preset Category Selection with Autofill
 document.querySelectorAll('.btn-preset').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.btn-preset').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
     const cat = btn.getAttribute('data-category');
     document.getElementById('task-category').value = cat;
+    updateTaskDescription(cat);
   });
 });
 
+// Category Dropdown Selection with Autofill
 document.getElementById('task-category').addEventListener('change', (e) => {
   const selectedCat = e.target.value;
   document.querySelectorAll('.btn-preset').forEach(btn => {
     if (btn.getAttribute('data-category') === selectedCat) {
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
     } else {
       btn.classList.remove('active');
+      btn.setAttribute('aria-pressed', 'false');
     }
   });
+  updateTaskDescription(selectedCat);
 });
 
 // Add Task
@@ -81,7 +118,7 @@ document.getElementById('task-form').addEventListener('submit', (e) => {
 
   activeTasks.push(newTask);
   renderTasks();
-  document.getElementById('task-title').value = '';
+  updateTaskDescription(category); // Reset input to category default
 });
 
 // Clear Tasks
@@ -120,11 +157,11 @@ function renderTasks() {
 
     item.innerHTML = `
       <div class="task-info">
-        <span class="badge"><i class="fa-solid ${icon}"></i> ${task.category}</span>
+        <span class="badge"><i class="fa-solid ${icon}" aria-hidden="true"></i> ${task.category}</span>
         <div class="task-title">${task.title}</div>
         <div class="task-meta">By ${task.assignedBy} ➔ To <strong>${task.assignedTo}</strong></div>
       </div>
-      <button class="btn-complete" onclick="completeTask(${task.id})"><i class="fa-solid fa-check"></i> Done</button>
+      <button class="btn-complete" aria-label="Mark task '${task.title}' as done" onclick="completeTask(${task.id})"><i class="fa-solid fa-check" aria-hidden="true"></i> Done</button>
     `;
 
     container.appendChild(item);
@@ -139,7 +176,7 @@ function renderWeeklyRota() {
   categories.forEach(cat => {
     const tr = document.createElement('tr');
 
-    let rowHTML = `<td><i class="fa-solid ${cat.icon}"></i> ${cat.name}</td>`;
+    let rowHTML = `<th scope="row"><i class="fa-solid ${cat.icon}" aria-hidden="true"></i> ${cat.name}</th>`;
 
     weeklyRota[cat.name].forEach((assignedPerson, dayIndex) => {
       let optionsHTML = members.map(m =>
@@ -148,7 +185,7 @@ function renderWeeklyRota() {
 
       rowHTML += `
         <td>
-          <select onchange="updateRota('${cat.name}', ${dayIndex}, this.value)">
+          <select aria-label="${cat.name} assignment for ${days[dayIndex]}" onchange="updateRota('${cat.name}', ${dayIndex}, this.value)">
             ${optionsHTML}
           </select>
         </td>
@@ -194,7 +231,7 @@ function renderReports() {
   members.forEach(m => {
     const row = document.createElement('div');
     row.className = 'member-stat-row';
-    row.innerHTML = `<span><i class="fa-solid fa-user"></i> ${m}</span><strong>${memberCounts[m]} Done</strong>`;
+    row.innerHTML = `<span><i class="fa-solid fa-user" aria-hidden="true"></i> ${m}</span><strong>${memberCounts[m]} Done</strong>`;
     memberStatsContainer.appendChild(row);
   });
 
@@ -211,7 +248,7 @@ function renderReports() {
     item.className = 'task-item completed';
     item.innerHTML = `
       <div class="task-info">
-        <span class="badge"><i class="fa-solid ${getCategoryIcon(task.category)}"></i> ${task.category}</span>
+        <span class="badge"><i class="fa-solid ${getCategoryIcon(task.category)}" aria-hidden="true"></i> ${task.category}</span>
         <div class="task-title">${task.title}</div>
         <div class="task-meta">Completed by <strong>${task.assignedTo}</strong></div>
       </div>
